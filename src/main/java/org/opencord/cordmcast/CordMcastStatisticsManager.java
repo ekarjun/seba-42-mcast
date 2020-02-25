@@ -26,6 +26,7 @@ import org.osgi.service.component.annotations.Deactivate;
 import java.util.Optional;
 import java.util.HashSet;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 
@@ -61,7 +62,7 @@ public class CordMcastStatisticsManager<list>
     }
 
     @Override
-    public HashMap<IpAddress, CordMcastStatistics> getMcastStats() {
+    public Map<IpAddress, CordMcastStatistics> getMcastStats() {
         return this.mcastRouteMap;
     }
 

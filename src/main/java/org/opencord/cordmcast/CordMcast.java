@@ -72,7 +72,6 @@ import org.opencord.cordconfig.access.AccessDeviceData;
 import org.osgi.service.component.ComponentContext;
 import org.slf4j.Logger;
 
-import java.util.HashMap;
 import java.util.Dictionary;
 import java.util.Properties;
 import java.util.Set;
@@ -148,7 +147,7 @@ public class CordMcast {
     private LeadershipService leadershipService;
 
     @Reference(cardinality = ReferenceCardinality.MANDATORY)
-    protected CordMcastStatisticsManager cordMcastStatisticsService;
+    protected CordMcastStatisticsService cordMcastStatisticsService;
 
     CordMcastStatisticsEventPublisher mcastStatsPublisher;
     ScheduledFuture<?> scheduledFuture;
@@ -714,9 +713,9 @@ public class CordMcast {
 
         public void run() {
             log.info("pushing corc mcast stats to kafka");
-            HashMap<IpAddress, CordMcastStatistics> map = cordMcastStatisticsService.getMcastStats();
+            Map<IpAddress, CordMcastStatistics> map = cordMcastStatisticsService.getMcastStats();
             map.forEach((k, v) -> {
-                log.info("Group: %s | Source: %s | Vlan: %s", k, v.getSourceAddress(), v.getVlanId().toString());
+                log.info("Group: " + k + " | Source: " + v.getSourceAddress() + " | Vlan: " + v.getVlanId().toString());
             });
             cordMcastStatisticsService.getStatsDelegate().
                     notify(new CordMcastStatisticsEvent(CordMcastStatisticsEvent.Type.STATS_UPDATE, map));
